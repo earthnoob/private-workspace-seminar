@@ -3,3 +3,5 @@
 This is my private workspace for my class' seminar.
 
 This is a new line.
+
+This is another new line.
