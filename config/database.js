@@ -1,5 +1,9 @@
-var sequelize = require('./sql/sql');
+const configDB = {
+    database: "students",
+    username: "root",
+    password: null,
+    host: "localhost",
+    dialect: "mysql"
+};
 
-module.exports.Student = sequelize.define('students', {
-    
-});
+module.exports = configDB;

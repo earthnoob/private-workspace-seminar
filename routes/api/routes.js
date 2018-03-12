@@ -1,37 +1,33 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../../config/model/user');
+const Student = require('../../config/models/Student');
 
 //Retrives all the info about the users in the database.
-router.get('/getallusers', (request, response, next) => {
+router.get('/getallstudents', (request, response, next) => {
     //console.log(`Request made at IP ${request.socket.remoteAddress}:${request.socket.remotePort}`);
-
-    User.find()
-    .then(data => { response.json(data) })
-    .catch(next);
+    Student.findAll()
+    .then(data => { response.json(data); })
+    .catch(error => next(error))
 })
 
 //Retrieves a specific user based on the ID.
 router.get('/:_id', (request, response, next) => {
     //console.log(`Request made at IP ${request.socket.remoteAddress}:${request.socket.remotePort}`);
-
-    User.findById({_id: request.params._id})
-    .then(data => { response.json(data) })
-    .catch(next);
+    Student.findById(request.params._id)
+    .then(data => { response.json(data); })
+    .catch(error => next(error))
 })
 
 //Adds a new user into the database.
-router.post('/adduser', (request, response, next) => {
-    let content = request.body;
-    User.create(content)
-    .then(data => { response.json(data) })
-    .catch(next);
+router.post('/addstudent', (request, response, next) => {
+    Student.create(request.body)
+    .then(data => { response.json(data); })
+    .catch(error => next(error))
+    
 })
 
-router.put('/updateuser', (request, response, next) => {
-    User.update()
-    .then(data => { response.json(data) })
-    .catch(next);
+router.put('/updatestudent', (request, response, next) => {
+    
 })
 
 module.exports = router;

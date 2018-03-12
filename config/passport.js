@@ -2,7 +2,7 @@
 var LocalStrategy   = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
 // load up the user model
-var User = require('./model/user');
+var Student = require('./models/Student');
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -22,12 +22,10 @@ module.exports = function(passport) {
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
         console.log("User DEserialization: ", id);
-        User.findById(id, function(err, user) {
+        Student.findById(id, function(err, user) {
             done(err, user);
         });
     });
-
-    
 
     passport.use('local-signup', new LocalStrategy({
         usernameField: 'username',
@@ -36,7 +34,7 @@ module.exports = function(passport) {
         session: false
       },
       function(req, username, password, done) {
-        User.findOne({ username: username })
+        Student.findOne({ username: username })
         .then((user, err)=>{
             if(err) {
                 return done(null, false, req.flash('signupMessage', 'An error occured.'));
@@ -46,11 +44,11 @@ module.exports = function(passport) {
                 return done(null, false, req.flash('signupMessage', 'Username already taken.'));
             } else {
                 //console.log("error", err, "user", data);
-                let passwd = bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+                let hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
                 //console.log(passwd);
-                User.create({
+                Student.create({
                     username: username,
-                    password: passwd,
+                    password: hashedPassword,
                     first_name: req.body.first_name,
                     last_name: req.body.last_name,
                     gender: req.body.gender,
